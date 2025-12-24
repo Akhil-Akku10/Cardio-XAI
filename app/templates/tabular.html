@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Heart Disease Prediction | Clinical AI</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            min-height: 100vh;
+            background: linear-gradient(135deg, #121526, #0b0e1a);
+            font-family: "Segoe UI", Tahoma, sans-serif;
+            color: #ffffff;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: auto;
+            padding: 35px 20px;
+        }
+
+        /* HEADER */
+        .header {
+            margin-bottom: 30px;
+        }
+
+        .header h1 {
+            font-size: 2.2rem;
+            margin-bottom: 8px;
+        }
+
+        .subtitle {
+            color: #9aa4ff;
+            font-size: 1rem;
+            max-width: 800px;
+        }
+
+        /* KPI SECTION */
+        .kpi-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 20px;
+            margin-bottom: 35px;
+        }
+
+        .kpi-card {
+            background: #151933;
+            border-radius: 14px;
+            padding: 18px 20px;
+            border: 1px solid rgba(255,255,255,0.08);
+        }
+
+        .kpi-card h3 {
+            font-size: 0.85rem;
+            color: #b3b9ff;
+            margin-bottom: 8px;
+            font-weight: 500;
+        }
+
+        .kpi-card .value {
+            font-size: 1.5rem;
+            font-weight: 600;
+        }
+
+        /* CARD */
+        .card {
+            background: linear-gradient(145deg, #161a35, #10142a);
+            border-radius: 18px;
+            padding: 25px;
+            border: 1px solid rgba(255,255,255,0.1);
+            margin-bottom: 30px;
+        }
+
+        .card h2 {
+            margin-top: 0;
+            margin-bottom: 15px;
+            font-size: 1.4rem;
+        }
+
+        /* FORM GRID */
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 16px 22px;
+            margin-bottom: 25px;
+        }
+
+        label {
+            font-size: 0.85rem;
+            color: #e0e3ff;
+        }
+
+        input {
+            width: 100%;
+            padding: 10px 12px;
+            border-radius: 10px;
+            border: 1px solid rgba(255,255,255,0.25);
+            background: rgba(255,255,255,0.05);
+            color: #ffffff;
+            outline: none;
+        }
+
+        input:focus {
+            border-color: #8f7afe;
+            box-shadow: 0 0 0 2px rgba(143,122,254,0.25);
+        }
+
+        /* BUTTON */
+        .btn {
+            display: inline-block;
+            padding: 11px 22px;
+            border-radius: 10px;
+            background: linear-gradient(135deg, #6a5af9, #8f7afe);
+            color: #ffffff;
+            font-size: 0.95rem;
+            font-weight: 500;
+            border: none;
+            cursor: pointer;
+            transition: transform 0.2s ease, background 0.3s ease;
+            text-decoration: none;
+        }
+
+        .btn:hover {
+            transform: scale(1.05);
+            background: linear-gradient(135deg, #7b6cff, #a091ff);
+        }
+
+        /* RESULT */
+        .result {
+            background: rgba(106,90,249,0.15);
+            border: 1px solid rgba(106,90,249,0.35);
+            border-radius: 14px;
+            padding: 20px;
+            margin-bottom: 30px;
+        }
+
+        .result h2 {
+            margin-top: 0;
+            margin-bottom: 10px;
+        }
+
+        .result p {
+            margin: 6px 0;
+            color: #e0e3ff;
+        }
+
+        /* IMAGE */
+        img {
+            width: 100%;
+            max-width: 650px;
+            margin-top: 15px;
+            border-radius: 12px;
+            border: 1px solid rgba(255,255,255,0.2);
+        }
+
+        /* NAV */
+        .nav {
+            margin-top: 20px;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <!-- HEADER -->
+    <div class="header">
+        <h1>❤️ Heart Disease Risk Prediction</h1>
+        <p class="subtitle">
+            Clinical Decision Support using Random Forest 
+        </p>
+    </div>
+
+    <!-- KPI -->
+    <div class="kpi-grid">
+        <div class="kpi-card">
+            <h3>Model Type</h3>
+            <div class="value">Random Forest</div>
+        </div>
+
+        <div class="kpi-card">
+            <h3>Input Type</h3>
+            <div class="value">Tabular Clinical Data</div>
+        </div>
+
+        
+
+        <div class="kpi-card">
+            <h3>Clinical Focus</h3>
+            <div class="value">Cardiovascular</div>
+        </div>
+    </div>
+
+    <!-- FORM -->
+    <form action="/predict_tabular" method="post">
+        <div class="card">
+            <h2>Patient Clinical Parameters</h2>
+
+            <div class="grid">
+                <label>Age</label>
+                <input type="number" name="age" required>
+
+                <label>Sex (1 = Male, 0 = Female)</label>
+                <input type="number" name="sex" min="0" max="1" required>
+
+                <label>Chest Pain Type (cp)</label>
+                <input type="number" name="cp" min="0" max="3" required>
+
+                <label>Resting Blood Pressure</label>
+                <input type="number" name="trestbps" required>
+
+                <label>Cholesterol</label>
+                <input type="number" name="chol" required>
+
+                <label>Fasting Blood Sugar</label>
+                <input type="number" name="fbs" min="0" max="1" required>
+
+                <label>Rest ECG</label>
+                <input type="number" name="restecg" min="0" max="2" required>
+
+                <label>Max Heart Rate</label>
+                <input type="number" name="thalach" required>
+
+                <label>Exercise Induced Angina</label>
+                <input type="number" name="exang" min="0" max="1" required>
+
+                <label>Oldpeak</label>
+                <input type="number" step="0.1" name="oldpeak" required>
+
+                <label>Slope</label>
+                <input type="number" name="slope" min="0" max="2" required>
+
+                <label>Major Vessels (ca)</label>
+                <input type="number" name="ca" min="0" max="4" required>
+
+                <label>Thal</label>
+                <input type="number" name="thal" min="0" max="3" required>
+            </div>
+
+            <button type="submit" class="btn">🔍 Predict Risk</button>
+        </div>
+    </form>
+
+    <!-- RESULT -->
+    {% if prediction %}
+    <div class="result">
+        <h2>Prediction Outcome</h2>
+        <p><strong>Result:</strong> {{ prediction }}</p>
+        <p><strong>Confidence:</strong> {{ confidence }} %</p>
+    </div>
+    {% endif %}
+
+    <!-- SHAP -->
+    {% if shap_path %}
+    <div class="card">
+        <h2>SHAP Feature Contribution</h2>
+        <img src="{{ url_for('static', filename=shap_path) }}" alt="SHAP Explanation">
+    </div>
+    {% endif %}
+
+    <!-- NAV -->
+    <div class="nav">
+        <a href="/" class="btn">⬅ Back to Dashboard</a>
+    </div>
+
+</div>
+
+</body>
+</html>

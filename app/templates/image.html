@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Pneumonia Detection | Clinical AI</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            min-height: 100vh;
+            background: linear-gradient(135deg, #121526, #0b0e1a);
+            font-family: "Segoe UI", Tahoma, sans-serif;
+            color: #ffffff;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: auto;
+            padding: 35px 20px;
+        }
+
+        /* HEADER */
+        .header {
+            margin-bottom: 30px;
+        }
+
+        .header h1 {
+            font-size: 2.2rem;
+            margin-bottom: 8px;
+        }
+
+        .subtitle {
+            color: #9aa4ff;
+            font-size: 1rem;
+            max-width: 800px;
+        }
+
+        /* KPI SECTION */
+        .kpi-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 20px;
+            margin-bottom: 35px;
+        }
+
+        .kpi-card {
+            background: #151933;
+            border-radius: 14px;
+            padding: 18px 20px;
+            border: 1px solid rgba(255,255,255,0.08);
+        }
+
+        .kpi-card h3 {
+            font-size: 0.85rem;
+            color: #b3b9ff;
+            margin-bottom: 8px;
+            font-weight: 500;
+        }
+
+        .kpi-card .value {
+            font-size: 1.5rem;
+            font-weight: 600;
+        }
+
+        /* CARD */
+        .card {
+            background: linear-gradient(145deg, #161a35, #10142a);
+            border-radius: 18px;
+            padding: 25px;
+            border: 1px solid rgba(255,255,255,0.1);
+            margin-bottom: 30px;
+        }
+
+        .card h2 {
+            margin-top: 0;
+            margin-bottom: 15px;
+            font-size: 1.4rem;
+        }
+
+        /* FILE INPUT */
+        input[type="file"] {
+            width: 100%;
+            padding: 12px;
+            border-radius: 12px;
+            border: 1px dashed rgba(255,255,255,0.4);
+            background: rgba(255,255,255,0.05);
+            color: #ffffff;
+            margin: 15px 0 20px;
+        }
+
+        /* BUTTON */
+        .btn {
+            display: inline-block;
+            padding: 11px 22px;
+            border-radius: 10px;
+            background: linear-gradient(135deg, #6a5af9, #8f7afe);
+            color: #ffffff;
+            font-size: 0.95rem;
+            font-weight: 500;
+            border: none;
+            cursor: pointer;
+            transition: transform 0.2s ease, background 0.3s ease;
+            text-decoration: none;
+        }
+
+        .btn:hover {
+            transform: scale(1.05);
+            background: linear-gradient(135deg, #7b6cff, #a091ff);
+        }
+
+        /* RESULT */
+        .result {
+            background: rgba(106,90,249,0.15);
+            border: 1px solid rgba(106,90,249,0.35);
+            border-radius: 14px;
+            padding: 20px;
+            margin-bottom: 30px;
+        }
+
+        .result h2 {
+            margin-top: 0;
+            margin-bottom: 10px;
+        }
+
+        .result p {
+            margin: 6px 0;
+            color: #e0e3ff;
+        }
+
+        /* IMAGE */
+        img {
+            width: 100%;
+            max-width: 600px;
+            margin-top: 15px;
+            border-radius: 12px;
+            border: 1px solid rgba(255,255,255,0.2);
+        }
+
+        /* NAV */
+        .nav {
+            margin-top: 20px;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <!-- HEADER -->
+    <div class="header">
+        <h1>🫁 Pneumonia Detection from Chest X-ray</h1>
+        <p class="subtitle">
+            CNN-based Medical Image Classification with Grad-CAM Explainability
+        </p>
+    </div>
+
+    <!-- KPI -->
+    <div class="kpi-grid">
+        <div class="kpi-card">
+            <h3>Model Type</h3>
+            <div class="value">CNN</div>
+        </div>
+
+        <div class="kpi-card">
+            <h3>Input Modality</h3>
+            <div class="value">Chest X-ray</div>
+        </div>
+
+        <div class="kpi-card">
+            <h3>Explainability</h3>
+            <div class="value">Grad-CAM</div>
+        </div>
+
+        <div class="kpi-card">
+            <h3>Clinical Domain</h3>
+            <div class="value">Pulmonary</div>
+        </div>
+    </div>
+
+    <!-- UPLOAD -->
+    <form action="/predict_image" method="post" enctype="multipart/form-data">
+        <div class="card">
+            <h2>Upload X-ray Image</h2>
+
+            <input
+                type="file"
+                name="image"
+                accept="image/*"
+                required
+            >
+
+            <button type="submit" class="btn">
+                🔍 Run Pneumonia Detection
+            </button>
+        </div>
+    </form>
+
+    <!-- RESULT -->
+    {% if prediction %}
+    <div class="result">
+        <h2>Prediction Outcome</h2>
+        <p><strong>Result:</strong> {{ prediction }}</p>
+        <p><strong>Confidence:</strong> {{ confidence }} %</p>
+    </div>
+    {% endif %}
+
+    <!-- GRAD-CAM -->
+    {% if gradcam_path %}
+    <div class="card">
+        <h2>Grad-CAM Heatmap</h2>
+        <img
+            src="{{ url_for('static', filename=gradcam_path) }}"
+            alt="Grad-CAM Visualization"
+        >
+    </div>
+    {% endif %}
+
+    <!-- NAV -->
+    <div class="nav">
+        <a href="/" class="btn">⬅ Back to Dashboard</a>
+    </div>
+
+</div>
+
+</body>
+</html>
